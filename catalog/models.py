@@ -33,7 +33,6 @@ class Product(models.Model):
         **NULLABLE,
     )
 
-
     def __str__(self):
         return f"{self.name} ({self.category}) - {self.price} руб."
 
