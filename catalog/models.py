@@ -27,7 +27,11 @@ class Product(models.Model):
         verbose_name="Дата изменения",
         auto_now=True,
     )
-
+    manufactured_at = models.DateField(
+        verbose_name="Дата производства",
+        help_text="Введите дату производства товара",
+        **NULLABLE,
+    )
 
     def __str__(self):
         return f"{self.name} ({self.category}) - {self.price} руб."
