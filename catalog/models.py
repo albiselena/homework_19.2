@@ -1,14 +1,15 @@
-from django.db import models
+from django.db import models, connection
 
 NULLABLE = {"null": True, "blank": True}
 
 
 class Product(models.Model):
+    # Таблица товаров
     name = models.CharField(
         max_length=100, verbose_name="Название", help_text="Введите название товара"
     )
     description = models.TextField(
-        verbose_name="Описание", help_text="Введите описание товара"
+        verbose_name="Описание", help_text="Введите описание товара", **NULLABLE
     )
     image = models.ImageField(upload_to="products/", verbose_name="Фото", **NULLABLE)
     category = models.ForeignKey(
@@ -28,7 +29,6 @@ class Product(models.Model):
         auto_now=True,
     )
 
-
     def __str__(self):
         return f"{self.name} ({self.category}) - {self.price} руб."
 
@@ -39,6 +39,7 @@ class Product(models.Model):
 
 
 class Category(models.Model):
+    # Таблица категорий
     name = models.CharField(
         max_length=100,
         verbose_name="Наименование",
@@ -55,3 +56,4 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
         ordering = ["name"]
+
