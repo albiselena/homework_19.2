@@ -57,3 +57,21 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
         ordering = ["name"]
 
+
+class Contact(models.Model):
+    # Таблица контактов и сообщений
+    name = models.CharField(max_length=100, verbose_name="Имя")
+    phone = models.CharField(max_length=20, verbose_name="Телефон")
+    message = models.TextField(verbose_name="Сообщение")
+    created_at = models.DateTimeField(
+        verbose_name="Дата создания",
+        auto_now_add=True,
+    )
+
+    def __str__(self):
+        return f"{self.name} ({self.phone})"
+
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
+        ordering = ["-created_at"]
