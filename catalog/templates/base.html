@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<header>
+    {% include 'includes/inc_menu.html' %}
+</header>
+
+<main>
+
+{% include 'includes/inc_section.html' %}
+
+{% block content %}{% endblock %}
+</main>
+
+<footer class="text-body-secondary py-5">
+  <div class="container">
+    <p class="float-end mb-1">
+      <a href="#" style="color: green;">Наверх</a>
+    </p>
+    <p class="mb-1">&copy; {% now "Y" %}</p>
+  </div>
+</footer>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    </body>
+</html>
