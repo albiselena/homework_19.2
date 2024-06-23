@@ -1,28 +1,26 @@
-from django.shortcuts import render, get_object_or_404
 from catalog.models import Product, Contact
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
 
-def index(request):
-    return render(request, 'base.html')
+class CatalogTemplateView(TemplateView):
+    template_name = 'catalog/base.html'
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        Contact.objects.create(name=name, phone=phone, message=message)
-        return render(request, 'contacts.html', {'message': 'Ваше сообщение отправлено!'})
-    return render(request, 'contacts.html')
+class ContactCreateView(CreateView):
+    model = Contact
+    template_name = 'catalog/contacts.html'
+    fields = ['name', 'phone', 'message']
+    success_url = '/products/'
 
 
-def products(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'products.html', context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/product_list.html'  # Шаблон, который будет использоваться для отображения списка объектов
+    context_object_name = 'products'  # Имя переменной в контексте, в которой будут храниться объекты
 
 
-def product_details(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'product_details.html', context)
+class ProductDetailView(DetailView):
+    model = Product
+
+    def get_queryset(self):
+        return Product.objects.filter(pk=self.kwargs['pk'])
