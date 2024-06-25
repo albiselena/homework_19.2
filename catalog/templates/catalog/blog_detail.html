@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{{blog.preview | media_filter}}" >
+            <div class="card-body">
+              <p class="card-text">{{ blog.text }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{% url 'catalog:blog_update' blog.pk %}" class="btn btn-outline-success">Редактировать</a>
+                    <a href="{% url 'catalog:blog_delete' blog.pk %}" class="btn btn-outline-danger">Удалить</a>
+                </div>
+                <small class="text-body-secondary">{{ blog.created_at }}</small>
+              </div>
+              <div>
+                <small class="text-body-secondary">{{ blog.slug }}</small>
+              </div>
+              <div>
+                <a href="{% url 'catalog:blog' %}" class="btn btn-outline-success">Назад</a>
+              </div>
+            </div>
+          </div>
+        </div>
+</div>
+{% endblock %}
