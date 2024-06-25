@@ -75,3 +75,25 @@ class Contact(models.Model):
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
         ordering = ["-created_at"]
+
+
+class Blog(models.Model):
+    # Таблица для блога
+    title = models.CharField(max_length=100, verbose_name="Заголовок")
+    slug = models.CharField(max_length=50, verbose_name="Слаг", **NULLABLE)
+    text = models.TextField(verbose_name="Текст")
+    preview = models.ImageField(upload_to="blog/", verbose_name="Превью", **NULLABLE)
+    created_at = models.DateTimeField(
+        verbose_name="Дата создания",
+        auto_now_add=True,
+    )
+    publication = models.BooleanField(default=True, verbose_name="Опубликовано")
+    number_of_views = models.IntegerField(default=0, verbose_name="Количество просмотров")
+
+    def __str__(self):
+        return f'{self.title} - {self.created_at}'
+
+    class Meta:
+        verbose_name = "Пост"
+        verbose_name_plural = "Посты"
+        ordering = ["-created_at"]
