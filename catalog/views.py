@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 from django.utils.text import slugify
+
+from catalog.forms import ProductForm
 from catalog.models import Product, Contact, Blog
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
@@ -24,6 +26,25 @@ class ProductDetailView(DetailView):
 
     def get_queryset(self):
         return Product.objects.filter(pk=self.kwargs['pk'])
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:products')
 
 
 class BlogListView(ListView):
