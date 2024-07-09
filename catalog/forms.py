@@ -1,9 +1,20 @@
 
 from django import forms
+from django.forms import BooleanField
 from catalog.models import Product, Version
 
 
-class ProductForm(forms.ModelForm):
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field, BooleanField):
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+
+class ProductForm(StyleFormMixin, forms.ModelForm):
     forbidden_keywords = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
                           'радар']
 
@@ -19,19 +30,19 @@ class ProductForm(forms.ModelForm):
         }
 
     def clean_name(self):
-        clean_data = self.cleaned_data['name'].lower()
+        clean_data = self.cleaned_data['name']
         if any(keyword in clean_data for keyword in self.forbidden_keywords):
             raise forms.ValidationError('Это название содержит запрещенные слова.')
         return clean_data
 
     def clean_description(self):
-        clean_data = self.cleaned_data['description'].lower()
+        clean_data = self.cleaned_data['description']
         if any(keyword in clean_data for keyword in self.forbidden_keywords):
             raise forms.ValidationError('Описание содержит запрещенные слова.')
         return clean_data
 
 
-class VersionForm(forms.ModelForm):
+class VersionForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Version
         fields = '__all__'
