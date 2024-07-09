@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from catalog.models import Category, Product, Contact, Blog
+from catalog.models import Category, Product, Contact, Blog, Version
 
 
 @admin.register(Product)
@@ -17,6 +17,14 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('name',)
     search_fields = ('name', 'description',)
+
+
+@admin.register(Version)
+class VersionAdmin(admin.ModelAdmin):
+    # Администрирование версий
+    list_display = ('product', 'version_number', 'version_name', 'is_active',)
+    list_filter = ('is_active',)
+    search_fields = ('version_number',)
 
 
 @admin.register(Contact)

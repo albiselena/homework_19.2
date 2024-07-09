@@ -2,6 +2,9 @@
 {% load my_tags %}
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
+  <div class="d-flex justify-content-center mt-4 mb-4">
+    <a href="{% url 'catalog:product_create' %}" class="btn btn-outline-success">Создать продукт</a>
+  </div>
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for product in object_list %}
@@ -12,11 +15,15 @@
               <p class="card-text">{{product.name}}</p>
               <p class="card-text">{{product.category}}</p>
               <p class="card-text">{{ product.description | slice_by_space:100 }}</p>
+              <p class="card-text">
+                <span class="badge bg-success">Активная версия: {{ product.active_version }}</span>
+              </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{% url 'catalog:product_detail' product.pk %}" type="button" class="btn btn-outline-success">Узнать больше</a>
+                  <a href="{% url 'catalog:product_update' product.pk %}" type="button" class="btn btn-outline-success">Изменить</a>
                 </div>
-                <small class="text-body-secondary">{{product.price}}.руб</small>
+                <small class="text-body-secondary">{{product.price}} руб.</small>
               </div>
             </div>
           </div>
