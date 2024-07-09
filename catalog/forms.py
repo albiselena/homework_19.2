@@ -1,8 +1,6 @@
-from django import forms
-from catalog.models import Product
 
 from django import forms
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
@@ -31,3 +29,14 @@ class ProductForm(forms.ModelForm):
         if any(keyword in clean_data for keyword in self.forbidden_keywords):
             raise forms.ValidationError('Описание содержит запрещенные слова.')
         return clean_data
+
+
+class VersionForm(forms.ModelForm):
+    class Meta:
+        model = Version
+        fields = '__all__'
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'version': forms.TextInput(attrs={'class': 'form-control'}),
+            'release_date': forms.DateInput(attrs={'class': 'form-control'}),
+        }

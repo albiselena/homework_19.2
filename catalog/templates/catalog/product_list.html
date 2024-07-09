@@ -15,6 +15,9 @@
               <p class="card-text">{{product.name}}</p>
               <p class="card-text">{{product.category}}</p>
               <p class="card-text">{{ product.description | slice_by_space:100 }}</p>
+              <p class="card-text">
+                <span class="badge bg-success">Активная версия: {{ product.active_version }}</span>
+              </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{% url 'catalog:product_detail' product.pk %}" type="button" class="btn btn-outline-success">Узнать больше</a>
