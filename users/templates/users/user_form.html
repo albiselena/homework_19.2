@@ -1,0 +1,21 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+    <div class="col-12 px-5">
+        <div class="row d-flex justify-content-center " style="height: 100vh;">
+            <div class="col-6 px-3">
+                <div class="card">
+                    <div class="card-body">
+                        <form method='post' enctype="multipart/form-data" >
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-outline-success">
+                                Зарегистрироваться
+                            </button>
+                            <a class="btn btn-outline-danger" href="{% url 'catalog:products' %}" role="button">Отменить</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
