@@ -1,4 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 
@@ -59,20 +61,31 @@ class ProductDetailView(ProductVersionMixin, DetailView):
     model = Product
 
 
-class ProductCreateView(ProductFormsetMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, ProductFormsetMixin, CreateView):
     """Добавление нового продукта."""
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
+    login_url = 'users:login'
+    redirect_field_name = "redirect_to"
+
+    def form_valid(self, form):
+        # Метод для связывания продукта с пользователем
+        product = form.save(commit=False)
+        product.owner = self.request.user  # Присваиваем владельца продукта
+        product.save()
+        return redirect('catalog:product_detail', pk=product.pk)
 
 
-class ProductUpdateView(ProductFormsetMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, ProductFormsetMixin, UpdateView):
     """Редактирование продукта."""
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
+    login_url = 'users:login'
+    redirect_field_name = "redirect_to"
 
 
 class ProductDeleteView(DeleteView):
