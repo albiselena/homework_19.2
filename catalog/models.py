@@ -28,6 +28,13 @@ class Product(models.Model):
         verbose_name="Дата изменения",
         auto_now=True,
     )
+    owner = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        **NULLABLE,
+        verbose_name="Владелец",
+        related_name="products",
+    )
 
     def __str__(self):
         return f"{self.name} ({self.category}) - {self.price} руб."

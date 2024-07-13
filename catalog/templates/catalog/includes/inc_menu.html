@@ -177,9 +177,11 @@
             <li><a href="/contacts" class="text-white">Наши контакты</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
+            <li><a href="{% url 'users:profile' %}" class="text-white">Изменить мои данные</a></li>
             {% else %}
             <li><a href="{% url 'users:login' %}" class="text-white">Войти в личный кабинет</a></li>
             <li><a href="{% url 'users:register' %}" class="text-white">Зарегистрироваться</a></li>
+            <li><a href="{% url 'users:password_reset' %}" class="text-white">Забыли пароль</a></li>
             {% endif %}
           </ul>
         </div>

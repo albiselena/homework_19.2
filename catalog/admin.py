@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from catalog.models import Category, Product, Contact, Blog, Version
+from users.models import User
 
 
 @admin.register(Product)
@@ -39,3 +40,11 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'publication',)
     list_filter = ('title', 'publication', 'created_at',)
     search_fields = ('title', 'text', 'created_at',)
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    # Администрирование пользователей
+    list_display = ('email', 'phone', 'country', 'avatar',)
+    list_filter = ('email', 'country',)
+    search_fields = ('email', 'phone', 'country',)
