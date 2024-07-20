@@ -5,6 +5,7 @@ from catalog.models import Product, Version
 
 
 class StyleFormMixin:
+    """Добавляет классы к виджетам формы для стилизации."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -12,6 +13,13 @@ class StyleFormMixin:
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
+
+
+class ProductModeratorForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ('description', 'is_published', 'category')
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
