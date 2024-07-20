@@ -35,6 +35,7 @@ class Product(models.Model):
         verbose_name="Владелец",
         related_name="products",
     )
+    is_published = models.BooleanField(default=False, verbose_name="публикация")
 
     def __str__(self):
         return f"{self.name} ({self.category}) - {self.price} руб."
@@ -43,6 +44,12 @@ class Product(models.Model):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ["name"]
+        permissions = [
+            ("can_edit_publication", "Может отменять публикацию продукта"),
+            ("can_edit_description", "Может редактировать описание продукта"),
+            ("can_edit_category", "Может менять категорию любого продукта"),
+        ]
+
 
 
 class Category(models.Model):

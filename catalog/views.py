@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Contact, Blog, Version
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
@@ -56,7 +57,7 @@ class ProductListView(ProductVersionMixin, ListView):
     model = Product
 
 
-class ProductDetailView(ProductVersionMixin, DetailView):
+class ProductDetailView(DetailView):
     """Подробная информация о продукте."""
     model = Product
 
@@ -87,11 +88,25 @@ class ProductUpdateView(LoginRequiredMixin, ProductFormsetMixin, UpdateView):
     login_url = 'users:login'
     redirect_field_name = "redirect_to"
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if (user.has_perm('catalog.can_edit_publication')
+                and user.has_perm('catalog.can_edit_description')
+                and user.has_perm('catalog.can_edit_category')):
+            return ProductModeratorForm
+        raise PermissionDenied("У вас нет прав для редактирования этого продукта.")
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление продукта."""
     model = Product
     success_url = reverse_lazy('catalog:products')
+
+    login_url = 'users:login'
+    redirect_field_name = "redirect_to"
+
 
 
 class CatalogTemplateView(TemplateView):
