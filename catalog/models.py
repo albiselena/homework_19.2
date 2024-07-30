@@ -51,7 +51,6 @@ class Product(models.Model):
         ]
 
 
-
 class Category(models.Model):
     # Таблица категорий
     name = models.CharField(
